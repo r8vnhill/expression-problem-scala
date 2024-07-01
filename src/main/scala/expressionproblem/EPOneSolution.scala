@@ -1,12 +1,16 @@
 package cl.uchile.dcc
 package expressionproblem
 
+// En este enfoque, utilizamos traits y herencia múltiple para combinar diferentes operaciones (evaluación,
+// representación, conteo). Este enfoque permite agregar nuevas operaciones sin modificar las clases de datos existentes
+// y agregar nuevos tipos de datos sin modificar las operaciones existentes. Sin embargo, puede ser más complejo debido
+// a la necesidad de gestionar la herencia múltiple.
 object EPOneSolution {
   trait Exp {
     def eval: Int
   }
 
-  trait Lit extends Exp {
+  trait Literal extends Exp {
     val n: Int
 
     def eval: Int = n
@@ -30,18 +34,18 @@ object EPOneSolution {
     def stringify: String
   }
 
-  trait StringifyLiteral extends Lit with StringifyExp {
+  trait StringifyLiteral extends Literal with StringifyExp {
     def stringify: String = n.toString
   }
 
-  trait PrintSum extends Sum with StringifyExp {
+  trait StringifySum extends Sum with StringifyExp {
     val e1: StringifyExp
     val e2: StringifyExp
 
     def stringify = s"(${e1.stringify} + ${e2.stringify})"
   }
 
-  trait PrintSub extends Sub with StringifyExp {
+  trait StringifySub extends Sub with StringifyExp {
     val e1: StringifyExp
     val e2: StringifyExp
 
@@ -52,7 +56,7 @@ object EPOneSolution {
     def count: Int
   }
 
-  trait CountLit extends Lit with CountExp {
+  trait CountLiteral extends Literal with CountExp {
     def count = 1
   }
 
@@ -72,14 +76,14 @@ object EPOneSolution {
 
   trait CountStringifyExpr extends CountExp with StringifyExp
 
-  trait CountStringifyLiteral extends CountLit with StringifyLiteral with CountStringifyExpr
+  trait CountStringifyLiteral extends CountLiteral with StringifyLiteral with CountStringifyExpr
 
-  trait CountStringifySum extends CountSum with PrintSum with CountStringifyExpr {
+  trait CountStringifySum extends CountSum with StringifySum with CountStringifyExpr {
     val e1: CountStringifyExpr
     val e2: CountStringifyExpr
   }
 
-  trait CountStringifySub extends CountSub with PrintSub with CountStringifyExpr {
+  trait CountStringifySub extends CountSub with StringifySub with CountStringifyExpr {
     val e1: CountStringifyExpr
     val e2: CountStringifyExpr
   }

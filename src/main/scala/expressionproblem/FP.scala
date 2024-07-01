@@ -1,8 +1,12 @@
 package cl.uchile.dcc
 package expressionproblem
 
+// En este enfoque, usamos funciones separadas (eval y stringify) para operar sobre las expresiones. Cada tipo de 
+// expresión es una clase de datos simple y las operaciones se definen utilizando patrones de coincidencia (match). Este
+// enfoque es bueno para agregar nuevas operaciones, pero agregar nuevos tipos de datos requiere modificar todas las
+// funciones de operaciones existentes.
 object FP {
-  trait Exp
+  sealed trait Exp
   case class Literal(n: Int) extends Exp
   case class Sum(e1: Exp, e2: Exp) extends Exp
   case class Sub(e1: Exp, e2: Exp) extends Exp
@@ -29,8 +33,3 @@ object FP {
     println(stringify(e))
   }
 }
-
-// En este enfoque, usamos funciones separadas (eval y pprint) para operar sobre las expresiones. Cada tipo de expresión
-// es una clase de datos simple y las operaciones se definen utilizando patrones de coincidencia (match). Este enfoque
-// es bueno para agregar nuevas operaciones, pero agregar nuevos tipos de datos requiere modificar todas las funciones
-// de operaciones existentes.
